@@ -7,7 +7,7 @@ import { Button, Modal, TextInput, Table, Group, Title, Container } from '@manti
 function Product() {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.products);
-
+  const { isAuth } = useSelector((state) => state.auth);
   const [opened, setOpened] = useState(false);
   const [editId, setEditId] = useState(null);
 
@@ -46,7 +46,9 @@ function Product() {
     <Container size="md" py={40}>
       <Group justify="space-between" mb="lg">
         <Title order={2}>Product List</Title>
-        <Button onClick={() => setOpened(true)}>Add Product</Button>
+        <Button disabled={!isAuth} onClick={() => setOpened(true)}>
+          Add Product
+        </Button>
       </Group>
 
       <Table highlightOnHover>
