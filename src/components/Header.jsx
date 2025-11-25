@@ -1,9 +1,12 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { login } from '../store/authSlice';
+import { login, logout } from '../store/authSlice';
 
 function Header() {
   const dispatch = useDispatch();
+
+  const { isAuth, user } = useSelector((state) => state.auth);
+
   const handleLogin = () => {
     dispatch(
       login({
@@ -17,6 +20,10 @@ function Header() {
       })
     );
   };
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   return (
     <header>
       <h1>Logo</h1>
@@ -24,9 +31,20 @@ function Header() {
         <NavLink to="/">Products</NavLink>
         <NavLink to="/todos">Todos</NavLink>
         <NavLink to="/profile">Profile</NavLink>
-        <button onClick={handleLogin} className="btn-login">
-          Login
-        </button>
+        {isAuth ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
+            <span>
+              <b style={{ color: 'red', textDecoration: 'underline' }}>{user?.name}</b>
+            </span>
+            <button onClick={handleLogout} className="btn-login">
+              Logout
+            </button>
+          </div>
+        ) : (
+          <button onClick={handleLogin} className="btn-login">
+            Login
+          </button>
+        )}
       </div>
     </header>
   );
